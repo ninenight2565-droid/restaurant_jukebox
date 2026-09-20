@@ -1,10 +1,11 @@
 FROM node:20-slim
 
-# 1. Install Python 3, pip, ffmpeg, and curl
+# 1. Install Python 3, pip, ffmpeg, curl, and python-is-python3 (creates /usr/bin/python symlink)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-pip \
     python3-venv \
+    python-is-python3 \
     ffmpeg \
     curl \
     && rm -rf /var/lib/apt/lists/*
