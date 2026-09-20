@@ -1,4 +1,6 @@
-﻿const { spawn } = require("child_process");
+const fs = require("fs");
+const path = require("path");
+const { spawn } = require("child_process");
 
 // Cache stream URLs in-memory (expires after 2 hours)
 const urlCache = new Map();
@@ -12,9 +14,23 @@ function getDirectAudioUrl(videoId) {
       }
     }
 
-    const py = spawn("python", [
-      "-c",
-      `
+    // Check for portable standalone yt-dlp.exe in bin directory
+    const binYtDlp = path.join(__dirname, "../bin/yt-dlp.exe");
+    let proc;
+
+    if (fs.existsSync(binYtDlp)) {
+      // Use portable yt-dlp.exe directly (No python required at all!)
+      proc = spawn(binYtDlp, [
+        "-f", "bestaudio[ext=m4a]/bestaudio/best",
+        "--get-url",
+        "--no-warnings",
+        `https://www.youtube.com/watch?v=${videoId}`
+      ]);
+    } else {
+      // Fallback to python
+      proc = spawn("python", [
+        "-c",
+        `
 import yt_dlp, sys
 ydl_opts = {'format': 'bestaudio[ext=m4a]/bestaudio/best', 'quiet': True, 'no_warnings': True}
 try:
@@ -23,15 +39,16 @@ try:
         print(info['url'])
 except Exception as e:
     sys.exit(1)
-      `
-    ]);
+        `
+      ]);
+    }
 
     let output = "";
-    py.stdout.on("data", (data) => {
+    proc.stdout.on("data", (data) => {
       output += data.toString();
     });
 
-    py.on("close", (code) => {
+    proc.on("close", (code) => {
       const url = output.trim();
       if (code === 0 && url && url.startsWith("http")) {
         urlCache.set(videoId, { url, timestamp: Date.now() });
@@ -41,7 +58,7 @@ except Exception as e:
       }
     });
 
-    py.on("error", (err) => {
+    proc.on("error", (err) => {
       reject(err);
     });
   });
