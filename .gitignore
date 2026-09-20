@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+*/node_modules/
+package-lock.json
+
+# Production builds
+client/dist/
+
+# Uploaded media & Local generated data
+server/uploads/*
+!server/uploads/.gitkeep
+server/rooms.json
+server/settings.json
+
+# Environment variables & Secrets
+.env
+.env.local
+.env.*.local
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.vscode/
+.idea/

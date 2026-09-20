@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Kanit', sans-serif;
+  background-color: #0A0A0A;
+}
+
+.frosted-glass {
+  background: rgba(18, 18, 22, 0.7);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.neon-glow-violet {
+  box-shadow: 0 0 35px -5px rgba(138, 43, 226, 0.35);
+}
+
+.neon-glow-cyan {
+  box-shadow: 0 0 35px -5px rgba(0, 240, 255, 0.35);
+}
+
+.neon-glow-pink {
+  box-shadow: 0 0 35px -5px rgba(255, 0, 122, 0.35);
+}
+
+.vinyl-spin {
+  animation: spin 16s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -20px) scale(1.1); }
+}
+
+.animate-float-orb-1 {
+  animation: floatOrb 12s ease-in-out infinite alternate;
+}
+
+.animate-float-orb-2 {
+  animation: floatOrb 15s ease-in-out infinite alternate-reverse;
+}
+
+.wave-bar {
+  animation: bounce 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes bounce {
+  0% { height: 20%; }
+  100% { height: 100%; }
+}

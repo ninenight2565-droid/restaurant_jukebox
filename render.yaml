@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: restaurant-jukebox
+    runtime: docker
+    plan: free
+    region: singapore
+    envVars:
+      - key: PORT
+        value: 8888
+      - key: NODE_ENV
+        value: production
