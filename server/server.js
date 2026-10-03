@@ -183,8 +183,13 @@ app.get("/api/rooms/:roomId/info", (req, res) => {
     return res.status(404).json({ status: "error", message: "ไม่พบห้องนี้" });
   }
 
-  const host = req.headers.host || `${LOCAL_IP}:${PORT}`;
+  let host = req.headers.host || `${LOCAL_IP}:${PORT}`;
   const protocol = req.headers["x-forwarded-proto"] || (req.secure ? "https" : "http");
+  
+  // If host is localhost or 127.0.0.1, replace with real LAN IP for mobile QR access
+  if (host.includes("localhost") || host.includes("127.0.0.1")) {
+    host = `${LOCAL_IP}:${PORT}`;
+  }
   const baseUrl = `${protocol}://${host}`;
 
   // QR URL contains the qrBypassSecret in query parameter ?t=...
